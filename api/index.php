@@ -11,18 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'));
 
     // Verifica si se recibió una palabra válida.
-    if ($data && isset($data->descripcion)) {
+    if ($data && isset($data->nombre)) {
         // Escapa la palabra para evitar problemas de seguridad.
-        $descripcion = $conexion->quote('%' . $data->descripcion . '%');
+        $nombre = $conexion->quote('%' . $data->nombre . '%');
 
         // Realiza una consulta para buscar palabras que contengan la palabra especificada.
-        $query = "SELECT * FROM producto WHERE descripcion LIKE $descripcion";
+        $query = "SELECT * FROM productos WHERE nombre LIKE $nombre";
         $result = $database->obtener($query);
         echo json_encode($result);
         if ($result) {
             $palabras = [];
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                $palabras[] = $row['descripcion'];
+                $palabras[] = $row['nombre'];
             }
             $response = [
                 'status' => 'success',
@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'message' => 'No se recibió una palabra válida.',
         ];
     }
-
     // Configura las cabeceras para que la respuesta sea en formato JSON.
     header('Content-Type: application/json');
 

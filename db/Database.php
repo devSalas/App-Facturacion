@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $usuario = "root";
     private $contrasena = "12345678";
-    private $base_de_datos = "facturacion";
+    private $base_de_datos = "sistema_facturacion";
     public $conexion;
 
     public function conectar() {

@@ -16,16 +16,46 @@ body{
 
 }
 
+input{
+    width: 100%;
+}
 
-main{
-    margin: 50px 0px 50px 0px;
+/* seccion agregar del  producto */
+
+.flex-row{
+    display: flex;
+    gap: 5px;
+    
+}
+.btns_producto{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.btn_eliminar,.btn_agregar{
+    /* aspect-ratio: 1/1; */
     
 }
 
-.grid-data-user{
+
+main{
+    margin: 50px 0px 0px 0px;
+    
+}
+
+
+
+.grid-data{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+    gap:20px;
+}
+.flex-data-producto,.flex-data-comprobante{
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 50px;
+    flex-direction: column;
+    gap:20px;
 }
 /* la navegacion */
 
@@ -47,7 +77,7 @@ main{
 .table-product{
     width: 100%;
     border-collapse: collapse;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 table tbody input{

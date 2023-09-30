@@ -1,3 +1,10 @@
+<?php
+if (!isset($_COOKIE["clave"])) {
+    header("Location: ./pages/login.php");
+ }
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
