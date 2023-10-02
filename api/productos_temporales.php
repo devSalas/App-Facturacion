@@ -10,12 +10,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recibe la palabra enviada en formato JSON.
     $data = json_decode(file_get_contents('php://input'));
 
+        $nombre= $data->nombre;
+        $descripcion=$data->descripcion;
+        $unidad_medida=$data->unidad_medida;
+        $precio=$data->precio;
+        $cantidad=$data->cantidad;
+        $importe=$data->importe;
+        /* print_r($nombre); */
+
+    // Consulta SQL con las variables concatenadas
+    $sql = "INSERT INTO productos_temporales (item, nombre, descripcion, precio, cantidad, importe, unidad_medida) VALUES ('1', '$nombre', '$descripcion', '$precio', '$cantidad', '$importe', '$unidad_medida')";
+
     
+    $database->ejecutar($sql);
 
+    $sql2 ="SELECT * FROM productos_temporales";
 
-    $slq="Insert Into table  `productos_temporales`(item,nombre,descripcion,precio,cantidad,importe) values()  ";
+    $consultarProductosTemporales = $database->obtener($sql2);
 
-    echo json_encode($data);
+    header('Content-Type: application/json');
+    echo json_encode($consultarProductosTemporales);
 } else {
     // Si no es una solicitud POST, devuelve un mensaje de error.
     $response = [

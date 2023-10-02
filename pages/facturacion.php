@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="facturacion.css">
+<!--     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css"> -->
 </head>
 
 <body>
@@ -27,7 +28,7 @@
 
                 <div class="flex-row">
                     <label for="">Detalle: <input type="text" name="descripcion"></label>
-                    <label for="">Tipo Afectación: <input type="text" name="afectacion"></label>
+                    <label for="">IGV: <input type="text" value="18%" name="afectacion" disabled></label>
                 </div>
 
                 <div class="flex-row">
@@ -39,17 +40,22 @@
                         <button class="btn_eliminar">X</button>
                     </div>
                 </div>
-                <div >
+<!--                 <div >
                     <label for="" class="flex-row">Cupon de descuento: <input type="text" name="descuento"></label>
-                </div>
+                </div> -->
             </div>
 
 
             <div class="flex-data-comprobante">
                 <div class="flex-row">
-                    <label for="">Tipo de comprobante: <input type="text"></label>
+                    <label for="">Tipo de comprobante: 
+                        <select name="comprobante" id="comprobante">   
+                            <option value="factura">Factura</option>
+                            <option value="boleta">Boleta</option>
+                        </select>
+                    </label>
                     <label for="">Serie-correlativo: <input type="text"></label>
-                    <label for="">Fecha de Emision: <input type="text"></label>
+                    <label for="">Fecha de Emision: <input type="text" id="fecha" disabled></label>
                 </div>
                 <div class="flex-row">
                     <label for="">Tipo de documento: 
@@ -62,7 +68,7 @@
                 </div>
                 <div class="flex-row">
                     <label for="">Dirección : <input type="text"></label>
-                    <label for="">forma de pago:
+                   <!--  <label for="">forma de pago:
                         <select name="forma_pago">
                         <optgroup label="Forma de Pago">
                             <option value="pago_contado">Pago al Contado</option>
@@ -73,7 +79,7 @@
                             <option value="pago_cheque">Pago con Cheque</option>
                         </optgroup>
                         </select>
-                    </label>
+                    </label> 
                 <label for="">
                     metodo de pago:
                     <select name="metodo_pago">
@@ -85,10 +91,10 @@
                             <option value="cheque">Cheque</option>
                             <option value="paypal">PayPal</option>
                             <option value="pago_movil">Pago Móvil</option>
-                            <!-- Agrega más opciones según tus necesidades -->
+
                         </optgroup>
                     </select>
-                </label>           
+                </label>       -->    
 
                 </div>
                 <div class="flex-row">
@@ -118,9 +124,9 @@
                 <th>importe</th>
             </thead>
             <tbody class="tbody-items">
-                <tr>
+                <tr class="mensaje-item-vacio">
                     <td colspan="6">
-                        <div class="mensaje-item-vacio">
+                        <div >
                             No existe ningun registro en el carrito.
                         </div>
                     </td>
@@ -128,18 +134,52 @@
 
                 <template class="template-items"> 
                 <tr>
-                    <td><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path></svg></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
-                    <td><input type="text"></td>
+                    <td class="uno"></td>
+                    <td class="dos"></td>
+                    <td class="tres"></td>
+                    <td class="cuatro"></td>
+                    <td class="cinco"></td>
+                    <td class="seis"></td>
                 </tr>
                 </template>
             </tbody>
         </table>
-    </div>
 
+
+        <table class="precio-total">
+            <tbody>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>IGV</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <style>
+        .precio-total{
+            margin-top: 20px;
+            border-collapse: collapse;
+            border:1px solid back;
+            
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+    </style>
 
     <script>
         const d = document;
@@ -147,22 +187,15 @@
         const tbodyItems= d.querySelector(".tbody-items");
         let $productoGlobal="";
 
-
-      /*   btnAddProduct.addEventListener("click",()=>{
-            let template = d.querySelector(".template-items");
-            let clone = d.importNode(template.content,true);
-            let contenedor =  d.querySelector(".tbody-items")
-            contenedor.appendChild(clone)
-        }) */
-
         const $formularioProducto = d.querySelector(".formulario-facturacion")
         const $inputProducto = d.querySelector(".input_producto")
         const $datalist = d.querySelector("datalist")
-        const $inputDescripcion = d.querySelector(".input_descripcion")
+        const $inputDescripcion = d.querySelector(".input_descripcion") 
         const $inputPrecio = d.querySelector(".input_precio")
         const $inputStock = d.querySelector(".input_stock")
         const $inputCantidad = d.querySelector(".input_cantidad")
         
+        let CONTADOR = 1;
 
 
         $inputProducto.addEventListener("keyup",(e)=>{
@@ -203,7 +236,6 @@
             getData()
         }) 
 
-
         $inputProducto.addEventListener('input', function () {
             const selectedValue = $inputProducto.value;
             const opciones = d.querySelectorAll('option');
@@ -221,14 +253,11 @@
                 break; 
                 }
             }
-            //const elementFound =  $productoGlobal.find(({descripcion})=>descripcion.toLowerCase() == selectedValue.toLowerCase())
-            
-        
+
 
         });
 
-
-       
+        $tablaProductos =  d.querySelector(".table-product")
          
         $formularioProducto.addEventListener("submit",(e)=>{
 
@@ -240,27 +269,40 @@
                 try {
 
                     let productosTemporales = {
-                        item,
-                        nombre: $form.,
-                        descripcion,
-                        precio,
-                        cantidad,
-                        importe
+                        nombre: form.producto.value,
+                        descripcion:form.descripcion.value,
+                        unidad_medida:form.unidad_medida.value,
+                        precio:Number(form.precio.value),
+                        cantidad:Number(form.cantidad.value),
+                        importe:Number(form.cantidad.value)*Number(form.precio.value)
                     }
-                    const res = await fetch("../api/productos_temporales.php", {method:"POST", body:JSON.stringify({descripcion:e.target.value})});
+
+                    console.log(productosTemporales)
+                    const res = await fetch("../api/productos_temporales.php", {method:"POST", body:JSON.stringify(productosTemporales)});
                     const json = await res.json()
                     console.log(json)
-                    $productoGlobal = json
+                    /* $productoGlobal = json */
+                    
+
+                    const $mensajeItemVacio = d.querySelector(".mensaje-item-vacio")
+                    if($mensajeItemVacio){
+
+                        tbodyItems.removeChild($mensajeItemVacio)
+                    }
 
                     const fragment = document.createDocumentFragment();
-                   
-                    json.forEach(producto => {
-                        const optionElement = d.createElement("option")
-                        optionElement.textContent = producto.descripcion
-                        fragment.appendChild(optionElement)
-                    });
+                    const templatesProductos = d.querySelector(".template-items")
 
-                    $datalist.appendChild(fragment)
+                    const clone = document.importNode(templatesProductos.content, true);
+                    clone.querySelector(".uno").textContent = CONTADOR
+                    clone.querySelector(".dos").textContent = productosTemporales.nombre
+                    clone.querySelector(".tres").textContent = productosTemporales.unidad_medida
+                    clone.querySelector(".cuatro").textContent = productosTemporales.cantidad
+                    clone.querySelector(".cinco").textContent = productosTemporales.precio
+                    clone.querySelector(".seis").textContent = productosTemporales.importe
+                    tbodyItems.appendChild(clone)
+
+                    CONTADOR++;                    
                     
 
                 } catch (error) {
@@ -271,12 +313,33 @@
 
             getProducto()
 
-            form.unidad_medida.value
-
         })
 
+        function EstablecerFecha(){
+            const fechaActual = new Date();
 
+            // Formatear la fecha como "YYYY-MM-DD" (por ejemplo, "2023-10-02")
+            const fechaFormateada = fechaActual.toISOString().split('T')[0];
 
+            // Establecer el valor del input con la fecha formateada
+            document.getElementById("fecha").value = fechaFormateada;
+        }
+        EstablecerFecha()
+        
+        function SumarTotalPrecioProducto(){
+
+        }
+        SumarTotalPrecioProducto()
+
+        window.addEventListener("beforeunload", async function (event) {
+          try {
+            const res = await fetch("../api/metodos_productos_temporales.php", {method:"POST", body:JSON.stringify({methodo:"eliminar_todo"})});
+            const json = await res.json()
+            console.log(json)
+          } catch (error) {
+            
+          }
+        });
     </script>
 </body>
 </html>
