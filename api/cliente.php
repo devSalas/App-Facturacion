@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombre = $conexion->quote('%' . $data->nombre . '%');
 
         // Realiza una consulta para buscar palabras que contengan la palabra especificada.
-        $query = "SELECT * FROM productos WHERE nombre LIKE $nombre";
+        $query = "SELECT * FROM clientes WHERE nombre LIKE $nombre";
         $result = $database->obtener($query);
         echo json_encode($result);
         if ($result) {
