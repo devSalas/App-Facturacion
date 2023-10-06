@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $clave = $_POST["clave"];
 
         // Consulta para verificar las credenciales
-        $consulta = "SELECT * FROM `usuario` WHERE correo = '$correo' AND clave = '$clave'";
+        $consulta = "SELECT * FROM `usuarios` WHERE correo = '$correo' AND clave = '$clave'";
 
         $resultado = $db->obtener($consulta);
 

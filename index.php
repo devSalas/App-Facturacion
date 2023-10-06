@@ -26,7 +26,8 @@ if (!isset($_COOKIE["clave"])) {
             <li><a href="index.php" class="block hover:scale-125 hover:text-cyan-400  ease-in duration-300">Inicio</a></li>
             <li><a href="./pages/registrar" class="block hover:scale-125 hover:text-cyan-400  ease-in duration-300" > Registro</a></li>
             <li  ><a href="./pages/inventario" class="block hover:scale-125 hover:text-cyan-400  ease-in duration-300">Inventario</a></li>
-            <!-- Agrega más enlaces de navegación según tus necesidades -->
+            <li><a href="./pages/facturacion.php" class="block hover:scale-125 hover:text-cyan-400  ease-in duration-300">facturación</a></li>
+          
         </ul>
     </nav>
     <section>

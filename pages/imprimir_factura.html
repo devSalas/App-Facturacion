@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Factura</title>
+</head>
+    <style>
+        /* Estilos CSS para la factura */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0px 20px;
+            size: A4;
+            max-width: 1000px;
+            margin: auto;
+            border: 1px solid black;
+        } 
+        .encabezado{
+            display: flex;
+            padding: 40px 0px;
+            justify-content: space-between;
+            
+        }  
+        h1{
+            font-size: 80px;
+            margin:0px;
+        }
+        .box-doc{
+            padding: 5px 40px;
+            right: 0px;
+            border:1px solid black;
+        }
+
+        table{
+            margin-top: 20px;
+            border-collapse: collapse;
+            border:1px solid back;
+            width: 100%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .box-precio-final{
+            display: flex;
+            flex-direction:column;
+            align-items: end;
+        }
+        .descripcion_empresa{
+            max-width: 400px;
+        }
+        .precioEnLetras{
+            text-align: end;
+        }
+    </style>
+<body>
+    <div class="encabezado">
+        <div>
+            <h1>VULTEC</h1>
+            <div class="descripcion_empresa">
+                <p>Juan Soto Bermeo 406, Santiago de Surco. Lima Peru</p>
+                <p>www.vultec.pe/</p>
+                <p>Teléfono: (01) 383-8733 Ventas</p>
+                <p>Wilkins: 942331794 Post Venta Junior: 933647489 Lun. a Vie. 8:00 am a 5:00 pm Sábados: 9:00 am a 2:00 pm </p>
+            </div>
+        </div>
+        <div >
+            <div class="box-doc">
+
+                <h3><span class="tipo_documento" style="text-align: center;">Factura electronica</h3>
+                <p class="tipo_doc_identificacion"><span>RUC</span> <span class="numero_documento">20556105909</span></p>
+                <p style="text-align: center;">A-<span class="numero_factura">001</span></p>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div>
+        <p><span>Fecha de Emision:</span> <span class="fecha_emision">07-10-2023</span></p>
+        <p><span>Señor (a):</span> <span class="nombre">Esteban salas sulca</span></p>
+        <p class="p_razon_social"><span>Razon social:</span> <span class="razon_social">ComputaSalas.S.A.C</span></p>
+        <p><span class="RUC_DNI">RUC:</span> <span  class="numero_docuemento">10747028261</span></p>
+        <p><span>Dirección:</span> <span class="direccion">San Juan de Miraflores, Lima, Peru</span></p>
+    </div>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>item</th>
+                <th>decripcion</th>
+                <th>cantidad</th>
+                <th>precio total</th>
+            </tr>
+        </thead>
+        <tbody>
+         
+        </tbody>
+    </table>
+    <hr>
+    <div>
+        <div class="box-precio-final">
+            <p><span>subtotal:</span>s/ <span class="subtotal">0.00</span></p>
+            <p><span>IGV(18%):</span>s/ <span class="igv">0.00</span></p>
+            <p><span>Total:</span>s/ <span class="total">0.00</span></p>
+        </div>
+        <div>
+            <p class="precioEnLetras"></p>
+        </div>
+    </div>
+
+
+    <script>
+        let parametros = new URLSearchParams(window.location.search);
+        let objetoCodificado = parametros.get("data");
+        let objetoDecodificado = JSON.parse(decodeURIComponent(objetoCodificado));
+
+        // Ahora tienes el objeto en la página de destino
+        console.log(objetoDecodificado) 
+        let {nombre,numero_factura,impuestos,razon_social,subtotal,total,direccion,documento,fecha_emision,datosTablaProductos} =objetoDecodificado
+        
+        const d = document
+        const get=(tag)=> d.querySelector(`.${tag}`)
+        const $tipo_documento = get("tipo_documento")
+        const $numero_documento= get("numero_documento")
+        const $tipo_doc_identificacion= get("tipo_doc_identificacion")
+        const $numero_factura= get("numero_factura")
+        const $fecha_emision= get("fecha_emision")
+        const $nombre= get("nombre")
+        const $razon_social= get("razon_social")
+        const $p_razon_social= get("p_razon_social")
+        const $direccion= get("direccion")
+        const $subtotal= get("subtotal")
+        const $igv= get("igv")
+        const $total= get("total")
+        const $precioEnLetras = get("precioEnLetras")
+        const $RUC_DNI = get("RUC_DNI")
+        console.log()
+        if(documento.length==8){
+            console.log("entro",$p_razon_social)
+            $tipo_doc_identificacion.style.display="none"
+            $p_razon_social.style.display="hidden"
+            $tipo_documento.textContent ="Boleta de venta electronica"
+            $RUC_DNI.textContent = "DNI:"
+        }
+
+        let CONTADOR=1;
+
+        d.addEventListener("DOMContentLoaded",()=>{
+            $numero_factura.textContent = numero_factura
+            $fecha_emision.textContent = fecha_emision
+            $nombre.textContent = nombre
+            $direccion.textContent = direccion
+            $numero_documento.textContent = documento
+
+            $subtotal.textContent = subtotal
+            $igv.textContent = impuestos
+            $total.textContent = total
+
+
+            let tabla = document.getElementById("table");
+            let tbody = document.querySelector("tbody");
+
+            datosTablaProductos.forEach(function (objeto) {
+            let fila = document.createElement("tr");
+
+            let columnaItem = document.createElement("td");
+            columnaItem.textContent = objeto.item;
+            fila.appendChild(columnaItem);
+
+            let columnaDescripción = document.createElement("td");
+            columnaDescripción.textContent = objeto.producto;
+            fila.appendChild(columnaDescripción);
+
+            let columnaCantidad = document.createElement("td");
+            columnaCantidad.textContent = objeto.cantidad;
+            fila.appendChild(columnaCantidad);
+
+            let columnaPrecio = document.createElement("td");
+            columnaPrecio.textContent = objeto.importe;
+            fila.appendChild(columnaPrecio);
+
+            // Agrega más columnas según tus necesidades
+
+            tbody.appendChild(fila);
+            });
+
+            function numeroEnPalabras(numero) {
+                var unidades = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+                var decenas = ["", "diez", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+                var excepciones = ["diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"];
+
+                function convertirUnidades(numero) {
+                    return unidades[numero];
+                }
+
+                function convertirDecenas(numero) {
+                    if (numero < 10) {
+                    return convertirUnidades(numero);
+                    } else if (numero >= 10 && numero < 20) {
+                    return excepciones[numero - 10];
+                    } else {
+                    var unidad = numero % 10;
+                    if (unidad === 0) {
+                        return decenas[Math.floor(numero / 10)];
+                    } else {
+                        return decenas[Math.floor(numero / 10)] + " y " + convertirUnidades(unidad);
+                    }
+                    }
+                }
+
+                function convertirCentenas(numero) {
+                    if (numero === 100) {
+                    return "cien";
+                    } else {
+                    var centena = Math.floor(numero / 100);
+                    var resto = numero % 100;
+                    if (centena === 1 && resto === 0) {
+                        return "cien";
+                    } else if (centena === 1) {
+                        return "ciento " + convertirDecenas(resto);
+                    } else {
+                        return unidades[centena] + "cientos " + convertirDecenas(resto);
+                    }
+                    }
+                }
+
+                function convertirMiles(numero) {
+                    if (numero < 1000) {
+                    return convertirCentenas(numero);
+                    } else {
+                    var millar = Math.floor(numero / 1000);
+                    var resto = numero % 1000;
+                    if (millar === 1 && resto === 0) {
+                        return "mil";
+                    } else if (millar === 1) {
+                        return "mil " + convertirCentenas(resto);
+                    } else {
+                        return convertirCentenas(millar) + " mil " + convertirCentenas(resto);
+                    }
+                    }
+                }
+
+                function convertirDecimales(numero) {
+                    var decimal = Math.round((numero - Math.floor(numero)) * 100);
+                    if (decimal === 0) {
+                    return "";
+                    } else if (decimal < 10) {
+                    return " con " + convertirUnidades(decimal) + "/100";
+                    } else {
+                    return " con " + convertirDecenas(decimal);
+                    }
+                }
+
+                var entero = Math.floor(numero);
+                var decimal = numero - entero;
+                var enPalabras = convertirMiles(entero) + convertirDecimales(decimal);
+
+                return enPalabras;
+            }
+
+            function agregarSolesYCentimos(cadena) {
+                var posicionCon = cadena.indexOf("con");
+                if (posicionCon !== -1) {
+                    var parteAntes = cadena.slice(0, posicionCon).trim();
+                    var parteDespues = cadena.slice(posicionCon).trim();
+                    return parteAntes + " soles " + parteDespues + " céntimos";
+                }
+                return cadena;
+            }
+
+            let numero = total;
+            let resultado = numeroEnPalabras(numero);
+            let resultadoConSoles = agregarSolesYCentimos(resultado);
+            console.log(resultado); // "mil doscientos noventa y nueve con 90/100"
+            $precioEnLetras.textContent =resultadoConSoles
+
+
+
+
+        })
+
+
+
+
+
+        window.onload = function() {
+        window.print();
+        }
+    </script>
+</body>
+</html>
